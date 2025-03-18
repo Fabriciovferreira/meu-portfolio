@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Portfólio</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <style>
+    /* Fundo de partículas */
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: rgba(5, 0, 0, 0.9);
+      z-index: -1;
+    }
+    
+    /* Efeito holográfico nas imagens */
+    .img-efeito {
+      transition: transform 0.3s ease, filter 0.3s ease;
+      filter: brightness(80%) contrast(120%);
+      transform: perspective(1000px) rotateY(0deg);
+    }
+    .img-efeito:hover {
+      transform: perspective(1000px) rotateY(10deg) scale(1.05);
+      filter: brightness(100%) contrast(130%);
+    }
+    
+    /* Estilizando os projetos */
+    #projetos ul {
+      list-style: none;
+      padding: 0;
+      text-align: center;
+    }
+    #projetos li {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .project-link {
+      display: inline-block;
+      margin-top: 5px;
+      padding: 8px 15px;
+      background-color: #3B82F6;
+      color: rgb(8, 8, 8);
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    .project-link:hover {
+      background-color: #2563eb;
+    }
+    
+    /* Removendo fundo branco e utilizando overlay semi-transparente para o conteúdo */
+    section {
+      background: none;
+      margin: 20px;
+      padding: 0;
+    }
+    .content {
+      background-color: rgb(49, 44, 44); /* Overlay preto semi-transparente */
+      box-shadow: 0px 0px 10px rgba(214, 155, 155, 0.5);
+      padding: 40px;
+      border-radius: 10px;
+      color: #f7f3f3; /* Texto branco para melhor contraste */
+    }
+    
+    /* Ajustes no header */
+    header {
+      background-color: transparent;
+      text-align: center;
+      padding: 20px;
+    }
+    header nav ul {
+      list-style: none;
+      padding: 0;
+    }
+    header nav ul li {
+      display: inline;
+      margin: 0 10px;
+    }
+    header nav ul li a {
+      color: #2d7bf8;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+    header nav ul li a:hover {
+      color: #ac0888;
+    }
+  </style>
+</head>
+<body>
+  <!-- Fundo com partículas -->
+  <div id="particles-js"></div>
+  
+  <header>
+    <h1>Meu Portfólio</h1>
+    <nav>
+      <ul>
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#projetos">Projetos</a></li>
+        <li><a href="#contato">Contato</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <section id="sobre">
+    <div class="content">
+      <h2>Sobre Mim</h2>
+      <p>
+        🚀 Estou iniciando minha jornada no desenvolvimento e focado em aprender JavaScript.
+        Atualmente, estou construindo meus primeiros projetos e aprimorando minhas habilidades
+        com cada desafio que enfrento. Acredito que a tecnologia tem o poder de transformar
+        ideias em soluções e estou determinado a evoluir constantemente para me tornar um
+        profissional qualificado.🚀
+      </p>
+    </div>
+  </section>
+  
+  <section id="projetos">
+    <div class="content">
+      <h2>Meus Projetos</h2>
+      <p>Confira alguns dos meus projetos mais recentes.</p>
+      <ul>
+        <li>
+          <h3>Calculadora</h3>
+          <a href="projetos/calculadora/calculador.html" target="_blank" class="project-link">Ver Projeto</a>
+        </li>
+        <li>
+          <h3>Jogo Avião</h3>
+          <a href="projetos/carrinhos/carrinhos.html" target="_blank" class="project-link">Ver Projeto</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+  
+  <section id="contato">
+    <div class="content">
+      <h2>Contato</h2>
+      <p>Entre em contato comigo pelos canais abaixo:</p>
+      <ul>
+        <li><i class="fas fa-envelope"></i> <strong>Email:</strong> bcfabricio33@gmail.com</li>
+        <li><i class="fab fa-whatsapp"></i> <strong>WhatsApp:</strong> (62) 9 9604-6122</li>
+        <li><i class="fab fa-linkedin"></i> <strong>LinkedIn:</strong>
+          <a href="https://www.linkedin.com/in/fabricio-vieira" target="_blank">Meu LinkedIn</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+  
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+/* Configuração geral */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F4F4F4; /* Fundo cinza claro */
+    color: #ebe1e1;
+    margin: 0;
+    padding: 0;
+}
+
+/* Cabeçalho */
+header {
+    background: rgba(0, 0, 0, 0.7); /* Preto com transparência */
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+/* Navegação */
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav a {
+    color: #3B82F6;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: white;
+}
+
+/* Seções */
+section {
+    padding: 40px;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.5); /* Transparente */
+    text-align: center;
+}
+
+/* Melhorando os títulos das seções */
+section h2 {
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 10px;
+    border: 2px solid #e4e5e9;
+    border-radius: 8px;
+    display: inline-block;
+    background-color: rgba(5, 5, 5, 0.6); /* Fundo semi-transparente */
+    color: #e9e3e3;
+}
+
+/* Seção "Sobre Mim" */
+#sobre {
+    background-color: rgba(24, 21, 21, 0.5);
+}
+
+/* Seção "Projetos" */
+#projetos {
+    background-color: rgba(24, 21, 21, 0.5);
+}
+
+#projetos h2 {
+    font-size: 24px;
+    color: #f7eeee;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #3B82F6;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+/* Estilo dos projetos */
+.projeto {
+    margin-bottom: 30px;
+}
+
+.projeto h3 {
+    font-size: 1.8em;
+    color: #030303;
+}
+
+.projeto p {
+    font-size: 1.2em;
+    color: #797878;
+}
+
+.projeto a {
+    color: #3B82F6;
+    font-size: 1.2em;
+    text-decoration: none;
+    border: 2px solid #3B82F6;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.projeto a:hover {
+    background-color: #3B82F6;
+    color: #fff;
+}
+
+/* Seção de Contato */
+#contato {
+    background-color: rgba(27, 25, 25, 0.5);
+    color: #ebdfdf;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+#contato h2 {
+    font-size: 24px;
+    color: #f3e9e9;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #3B82F6;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+#contato ul {
+    list-style: none;
+    padding: 0;
+}
+
+#contato li {
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+#contato i {
+    margin-right: 10px;
+    color: #3B82F6;
+}
+
+#contato a {
+    color: #3B82F6;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#contato a:hover {
+    color: #1e5fa3;
+}
+
+/* Efeito de transição suave para todos os links e botões */
+a, button {
+    transition: all 0.3s ease;
+}
+
+/* Estilo para o link do LinkedIn com borda */
+#contato a[href*="linkedin"] {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 2px solid #3B82F6;
+    border-radius: 5px;
+    color: #3B82F6;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#contato a[href*="linkedin"]:hover {
+    background-color: #3B82F6;
+    color: white;
+}
+
+/* Link de projeto */
+.project-link {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 2px solid #3B82F6;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: 10px;
+    background-color: #3B82F6;
+}
+
+.project-link:hover {
+    background-color: #2563eb;
+    color: white;
+}
+
+#particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: -1;
+}
