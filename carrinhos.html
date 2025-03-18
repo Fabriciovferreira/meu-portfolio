@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Avião</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #fcfcfc;
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+        }
+        #score {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            color: black;
+            font-family: Arial, sans-serif;
+        }
+        #startBtn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 10px 20px;
+            font-size: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #startBtn:hover {
+            background-color: #45a049;
+        }
+        #pauseBtn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            font-size: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #pauseBtn:hover {
+            background-color: #45a049;
+        }
+        #pauseBtn {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="score">Pontuação: 0</div>
+    <canvas id="gameCanvas"></canvas>
+    <button id="startBtn" onclick="startGame()">Iniciar Jogo</button>
+    <button id="pauseBtn" onclick="togglePause()">Pausar</button>
+    
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth * 0.9;
+        canvas.height = window.innerHeight * 0.9;
+
+        let aviao = { x: canvas.width / 2, y: canvas.height - 80, width: 70, height: 70, speed: 7 };  // Diminuído o tamanho do avião do jogador
+        let moveLeft = false, moveRight = false, moveUp = false, moveDown = false;
+        let enemyPlanes = [];
+        let score = 0;
+        let speed = 2;
+        let gameOver = false;
+        let gamePaused = false;
+
+        // Carregar as imagens
+        const aviaoImg = new Image();
+        const enemyImg = new Image();
+        aviaoImg.src = 'https://cdn.pixabay.com/photo/2019/06/27/06/49/plane-4301615_1280.png';
+        enemyImg.src = 'https://img.freepik.com/psd-premium/aviao-de-combate-png-isolado-em-fundo-transparente_251268-10785.jpg?w=826';
+
+        // Função para desenhar o avião do jogador
+        function drawAviao() {
+            ctx.drawImage(aviaoImg, aviao.x - aviao.width / 2, aviao.y - aviao.height / 2, aviao.width, aviao.height);
+        }
+
+        // Função para criar inimigos (aviões vermelhos) com maior frequência
+        function createEnemyPlane() {
+            if (Math.random() < 0.05) { // Aumentei a chance de criação de aviões
+                let x = Math.random() * canvas.width;
+                let y = -50;
+                let radius = 30; // Diminuí o tamanho dos aviões inimigos
+                let speed = Math.random() * 3 + 1;
+                enemyPlanes.push({ x, y, radius, speed, smokeParticles: [] });
+            }
+        }
+
+        // Função para desenhar inimigos e adicionar fumaça atrás deles
+        function drawEnemyPlanes() {
+            for (let i = 0; i < enemyPlanes.length; i++) {
+                let enemy = enemyPlanes[i];
+                ctx.drawImage(enemyImg, enemy.x - enemy.radius, enemy.y - enemy.radius, enemy.radius * 2, enemy.radius * 2);
+                enemy.y += enemy.speed;
+                createSmoke(enemy.x, enemy.y, enemy.smokeParticles, 'black'); // Criando fumaça preta para os inimigos
+
+                // Desenhando a fumaça
+                drawSmoke(enemy.smokeParticles);
+
+                if (enemy.y > canvas.height) {
+                    enemyPlanes.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        // Função para criar fumaça atrás dos aviões
+        function createSmoke(x, y, smokeParticles, color) {
+            // Fumaça do jogador será mais leve, fumaça dos inimigos será mais intensa
+            for (let i = 0; i < 2; i++) { // Aumentei a quantidade de partículas de fumaça
+                smokeParticles.push({
+                    x: x + Math.random() * 10 - 5,
+                    y: y + Math.random() * 10 - 5,
+                    speedX: Math.random() * 2 - 1,
+                    speedY: Math.random() * 2 - 1,
+                    size: Math.random() * 5 + 2,
+                    alpha: 1,
+                    color: color
+                });
+            }
+        }
+
+        // Função para desenhar a fumaça
+        function drawSmoke(smokeParticles) {
+            for (let i = 0; i < smokeParticles.length; i++) {
+                const particle = smokeParticles[i];
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.size, 0, 2 * Math.PI);
+                ctx.fillStyle = `rgba(${particle.color === 'black' ? '0, 0, 0' : '169, 169, 169'}, ${particle.alpha})`; // Fumaça preta ou cinza
+                ctx.fill();
+                particle.x += particle.speedX;
+                particle.y += particle.speedY;
+                particle.size *= 0.98;
+                particle.alpha -= 0.01;
+                if (particle.alpha <= 0) {
+                    smokeParticles.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        // Função de colisão
+        function checkCollisions() {
+            for (let i = 0; i < enemyPlanes.length; i++) {
+                let enemy = enemyPlanes[i];
+                let dx = aviao.x - enemy.x;
+                let dy = aviao.y - enemy.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < aviao.width / 2 + enemy.radius) {
+                    alert('Game Over! Pontuação final: ' + score);
+                    resetGame();
+                }
+            }
+        }
+
+        // Função para reiniciar o jogo
+        function resetGame() {
+            aviao.x = canvas.width / 2;
+            aviao.y = canvas.height - 80;  // Ajustei a posição y
+            enemyPlanes = [];
+            score = 0;
+            speed = 2;
+            gameOver = false;
+            gamePaused = false;
+            document.getElementById("score").innerText = "Pontuação: 0";
+        }
+
+        // Função para começar o jogo
+        function startGame() {
+            document.getElementById("startBtn").style.display = 'none';
+            document.getElementById("pauseBtn").style.display = 'inline-block';
+            updateGame();
+        }
+
+        // Função para alternar pausa
+        function togglePause() {
+            gamePaused = !gamePaused;
+            if (gamePaused) {
+                document.getElementById("pauseBtn").innerText = 'Retomar';
+            } else {
+                document.getElementById("pauseBtn").innerText = 'Pausar';
+                updateGame();
+            }
+        }
+
+        // Função para atualizar o jogo
+        function updateGame() {
+            if (gamePaused || gameOver) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawAviao();
+            drawEnemyPlanes();
+            checkCollisions();
+
+            // Criando novos inimigos
+            createEnemyPlane();
+
+            // Atualizando a pontuação
+            score++;
+            document.getElementById("score").innerText = "Pontuação: " + score;
+
+            // Atualizando a velocidade dos inimigos
+            enemyPlanes.forEach((enemy) => {
+                enemy.speed += speed / 300;
+            });
+
+            // Movimentação do jogador
+            if (moveLeft && aviao.x > 0) aviao.x -= aviao.speed;
+            if (moveRight && aviao.x < canvas.width - aviao.width) aviao.x += aviao.speed;
+            if (moveUp && aviao.y > 0) aviao.y -= aviao.speed;
+            if (moveDown && aviao.y < canvas.height - aviao.height) aviao.y += aviao.speed;
+
+            // Chama a função de atualização novamente no próximo quadro
+            requestAnimationFrame(updateGame);
+        }
+
+        // Movimentação do jogador
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft' || event.key === 'a') moveLeft = true;
+            if (event.key === 'ArrowRight' || event.key === 'd') moveRight = true;
+            if (event.key === 'ArrowUp' || event.key === 'w') moveUp = true;
+            if (event.key === 'ArrowDown' || event.key === 's') moveDown = true;
+        });
+
+        window.addEventListener('keyup', (event) => {
+            if (event.key === 'ArrowLeft' || event.key === 'a') moveLeft = false;
+            if (event.key === 'ArrowRight' || event.key === 'd') moveRight = false;
+            if (event.key === 'ArrowUp' || event.key === 'w') moveUp = false;
+            if (event.key === 'ArrowDown' || event.key === 's') moveDown = false;
+        });
+    </script>
+</body>
+</html>
